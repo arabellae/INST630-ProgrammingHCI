@@ -66,9 +66,11 @@ body {
   /* YOUR CODE: grid-template-columns */
   grid-template-columns: 1fr;
   /* YOUR CODE: grid-template-rows */
-  grid-template-rows: auto auto auto;
+  grid-template-rows: auto 1fr auto;
   min-height: 100vh;
   gap: var(--spacing-md);
+  align-content: start;
+  align-items: start;
 }
 
 /* ===========================================
@@ -126,6 +128,7 @@ body {
   /* YOUR CODE: display flex, gap, wrap behavior */
   display: flex;
   gap: 24px;
+  flex-wrap: wrap;
 }
 
 .list-item {
@@ -134,13 +137,20 @@ body {
   border-radius: 0.5rem;
   border: 1px solid var(--color-border);
    list-style: none;
+
   /* YOUR CODE: flex-basis or width for sizing */
-   width: 471px;
+   flex: 1 1 300px;
   padding: 24px;
   display: flex;
   align-items: flex-start;
   gap: var(--spacing-md);
   flex-direction: row;
+}
+
+.list-item-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
 }
 
 /* ===========================================

@@ -1,84 +1,387 @@
-/* INTENTIONALLY UGLY STARTER STYLES */
-/* These styles are very, very ugly. */
-/* Time to make them attractive, legible, and usable */
+
+:root {
+    --color-ink: #2b1b10;           
+    --color-ink-soft: #4a3222;       
+    --color-cream: #fff3dc;    
+    --color-navy: #1C1C2B;      
+    --color-focus: #2b1b10;        
+
+    --font-display: 'Sunshiney', cursive;
+    --font-body: 'Gaegu', cursive;
+
+    /* I 100% used claude to help me with issues I was having keeping the text
+    within the bounds of the background and then matched my work to claudes formatting
+    because I wanted it to look consistent and I didn't want to mess up the text again */
+
+    
+    /* Card content padding, one set per frame (order: top right bottom left).
+       Left/right come from the safe area measured on each SVG, as a share of the
+       card width, plus about 2% of margin. The frames are not symmetric.
+       Top/bottom are in rem, because padding % can only follow width while the
+       frame's border thickness follows the card height, which comes from the text.
+       These are the mobile (no-rays) frames; the desktop breakpoint overrides them. */
+    --instructions-pad-y: clamp(3.5rem, 8.5rem - 8vw, 7rem);   
+    --ingredients-pad: 3.5rem 16% 4rem 12%;
+    --meta-pad: 4.5rem 12% 4.5rem 13%;
+    --instructions-pad: var(--instructions-pad-y) 13% var(--instructions-pad-y) 12%;
+
+      /* Spacing scale */
+    --space-xs: 0.25rem;
+    --space-s: 0.5rem;
+    --space-m: 1rem;
+    --space-l: 2rem;
+    --space-xl: 3rem;
+
+    --text-body: 1.25rem;
+    --text-small: 1.05rem;
+    --text-meta: 1.3rem;
+    --text-h2: 1.75rem;
+    --text-title: clamp(1.4rem, 8cqw, 3rem);
+    --line-body: 1.45;
+}
+
+
+* {
+    box-sizing: border-box;
+}
 
 body {
-    font-family: Times, serif;
-    background-color: #ff00ff;
     margin: 0;
-    padding: 0;
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--line-body);
+    background-image: url('Paper\ Background.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    min-height: 100vh;
+}
+
+h1,
+h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.2;
+    margin: 0 0 var(--space-m);
+}
+
+h2 {
+    font-size: var(--text-h2);
+}
+
+p {
+    margin: 0 0 var(--space-m);
+}
+
+a {
+    color: inherit;
+    text-underline-offset: 0.2em;
+}
+
+a:focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+}
+
+
+body {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+        "top"
+        "main"
+        "bottom";
+}
+
+main {
+    grid-area: main;
+    padding: var(--space-l) var(--space-m);
 }
 
 .recipe-container {
-    background-color: yellow;
-    border: 10px solid red;
-    margin: 10px;
-    padding: 5px;
+    display: grid;
+    gap: var(--space-xl);
+    grid-template-columns: 1fr;
+    grid-template-areas:
+        "header"
+        "metaInfo"
+        "ingredients"
+        "instructions"
+        "footer";
 }
 
+
+.border-top,
+.border-bottom {
+    line-height: 0;                
+    position: relative;
+    z-index: 2;                   
+}
+
+.border-top {
+    grid-area: top;
+}
+
+.border-bottom {
+    grid-area: bottom;
+    transform: scaleY(-1);
+}
+
+.border-top img,
+.border-bottom img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+
+.border-left,
+.border-right {
+    display: none;
+    position: relative;
+}
+
+.border-left {
+    grid-area: border-left;
+}
+
+.border-right {
+    grid-area: border-right;
+    transform: scaleX(-1);
+}
+
+.border-image-bottom,
+.border-image-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.border-image-bottom {
+    z-index: -1;
+    object-fit: cover;
+}
+
+.border-image-top {
+    z-index: 1;
+    object-fit: fill;
+}
+
+
+
 .recipe-header {
-    background-color: lime;
-    border: 3px dotted blue;
-    text-align: center;
+    grid-area: header;
+    justify-self: center;
+    width: 100%;
+    max-width: 34rem;
+    aspect-ratio: 674 / 414;     
+    background-image: url('longHeaderBackingVector.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    container-type: inline-size;   
+    padding-left: 4%;             
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .recipe-title {
-    color: red;
-    font-size: 40px;
-    text-decoration: underline;
+    margin: 0 12% var(--space-s);
+    text-wrap: balance;            
+    color: var(--color-navy);
+    font-size: var(--text-title);
+    text-align: center;
 }
 
-.recipe-meta {
-    background-color: orange;
-    border: 2px dashed purple;
+.recipe-image {
+    width: 32%;
+    height: auto;
+    filter: drop-shadow(0 0 8px var(--color-cream)) drop-shadow(0 0 8px var(--color-cream));
 }
 
-.recipe-description {
-    background-color: aqua;
-    font-size: 8px;
-    color: purple;
+
+
+.meta-card,
+.ingredients-section,
+.instructions-section {
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    width: 90%;                   
+    justify-self: center;
+    min-width: 0;
+    overflow-wrap: anywhere;       
+}
+
+.meta-card {
+    grid-area: metaInfo;
+    background-image: url('OrangeBoxNoRays.svg#svgView(preserveAspectRatio(none))');
+    padding: var(--meta-pad);
 }
 
 .ingredients-section {
-    background-color: pink;
-    border: 5px solid brown;
+    grid-area: ingredients;
+    background-image: url('GreenBoxNoRays.svg#svgView(preserveAspectRatio(none))');
+    padding: var(--ingredients-pad);
 }
 
+.instructions-section {
+    grid-area: instructions;
+    background-image: url('PurpleBoxNoRays.svg#svgView(preserveAspectRatio(none))');
+    padding: var(--instructions-pad);
+}
+
+
+
+.recipe-meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-m);
+}
+
+.meta-item {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs) var(--space-s);
+    font-size: var(--text-meta);
+}
+
+.recipe-description p {
+    margin-bottom: 0;
+}
+
+
 .ingredients-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-s);
+    margin: 0;
+    padding: 0;
     list-style: none;
 }
 
 .ingredients-list li {
-    background-color: white;
-    border: 1px solid black;
-    margin: 2px;
-    padding: 1px;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-s);
 }
 
-.instructions-section {
-    background-color: lightgray;
-    border: 3px solid navy;
+.ingredients-list li::before {
+    content: '';
+    flex: none;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: 0.25em;
+    border: 2px solid var(--color-ink);
+    border-radius: 3px;
+}
+
+
+.instructions-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-m);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
 }
 
 .instruction-step {
-    background-color: beige;
-    border: 2px solid maroon;
-    margin: 3px;
+    position: relative;
+    padding-left: 2.5rem;
+    counter-increment: step;
 }
+
+.instruction-step::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0.1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 50%;
+    background: var(--color-ink);
+    color: var(--color-cream);
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+}
+
+
 
 .recipe-footer {
-    background-color: violet;
-    text-align: right;
-    font-size: 6px;
+    grid-area: footer;
+    text-align: center;
+    font-size: var(--text-small);
+    color: var(--color-ink-soft);
 }
 
-.recipe-image {
-    /* width: 50px;
-    height: 50px; */
-    border: 5px solid black;
+.recipe-footer p {
+    margin-bottom: var(--space-s);
 }
 
-* {
-    margin: 2px;
-    padding: 1px;
+
+
+@media (min-width: 1040px) {
+    body {
+        grid-template-columns: 1fr 6fr 1fr;
+        grid-template-areas:
+            "top top top"
+            "border-left main border-right"
+            "bottom bottom bottom";
+    }
+
+    .border-left,
+    .border-right {
+        display: block;
+        grid-row: 1 / -1;          
+    }
+
+    main {
+        padding: var(--space-xl) var(--space-l);
+    }
+
+    .recipe-container {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            "header header"
+            "ingredients metaInfo"
+            "instructions instructions"
+            "footer footer";
+    }
+
+    .recipe-header {
+        width: 55%;
+        max-width: 44rem;
+    }
+
+   
+    :root {
+        --ingredients-pad: 6rem 17% 5.5rem 18%;
+        --meta-pad: 6rem 16% 4.5rem 15%;
+        --instructions-pad: 5.5rem 21% 5rem 15%;
+    }
+
+    .meta-card {
+        width: 85%;
+        background-image: url('OrangeBox.svg#svgView(preserveAspectRatio(none))');
+    }
+
+    .ingredients-section {
+        width: 85%;
+        background-image: url('GreenBox.svg#svgView(preserveAspectRatio(none))');
+    }
+
+    .instructions-section {
+        width: 88%;
+        background-image: url('PurpleBox.svg#svgView(preserveAspectRatio(none))');
+    }
 }

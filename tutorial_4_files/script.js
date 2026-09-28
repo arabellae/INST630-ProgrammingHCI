@@ -32,10 +32,10 @@ const guestInput   = document.querySelector('#guest-input');
 const guestField   = document.querySelector('#guest-field');
 
 // Try getting the yes, no, confirmation and regret elements from the html.
-// const btnYes       = ;
-// const btnNo        = ;
-// const confirmation = ;
-// const regret       = ;
+const btnYes       = document.querySelector('#btn-yes');
+const btnNo        = document.querySelector('#btn-no');
+const confirmation = document.querySelector('#confirmation');
+const regret       = document.querySelector('#regret');
 
 
 // ── 3. HELPERS: small functions that do one thing ───────────
@@ -66,8 +66,17 @@ const getGuests = () => Number(guestInput.value);
 //   - call updateConfirmation() (written below in Task 3)
 
 btnYes.addEventListener('click', () => {
+  isGoing = true;
+  isNotGoing = false;
 
-  // YOUR CODE HERE
+  btnYes.classList.add('active');
+  btnNo.classList.remove('active');
+
+  guestField.classList.remove('hidden');
+  confirmation.classList.remove('hidden');
+  regret.classList.add('hidden');
+
+  updateConfirmation();
 
 
 });
@@ -83,6 +92,15 @@ btnYes.addEventListener('click', () => {
 btnNo.addEventListener('click', () => {
 
   // YOUR CODE HERE
+  isGoing = false;
+  isNotGoing = true;
+
+  btnNo.classList.add('active');
+  btnYes.classList.remove('active');
+
+  guestField.classList.add('hidden');
+  confirmation.classList.add('hidden');
+  regret.classList.remove('hidden');
 
 
 });
@@ -104,12 +122,23 @@ btnNo.addEventListener('click', () => {
 
 const updateConfirmation = () => {
   const guests = getGuests();
+  if (guests === 0) {
+    guestLine = `flying solo.
+    One person confirmed so far (that's you!).`;
+  } else if (guests === 1) {
+    guestLine = `bringing 1 guest.
+    ${guests + 1} confirmed so far.`;
+  } else {
+    guestLine = `bringing ${guests} guests.\
+    ${guests + 1} confirmed so far.`;
+  }
 
   // YOUR CODE HERE: build guestLine based on guests value
 
 
   // YOUR CODE HERE: set confirmation.textContent using a template literal
   // Example shape: `${getName()} is coming — ${guestLine}`
+  confirmation.textContent = `${getName()} is coming — ${guestLine}`;
 
 };
 
@@ -125,13 +154,22 @@ const updateConfirmation = () => {
 nameInput.addEventListener('input', () => {
 
   // YOUR CODE HERE
-
+  if(nameInput.value !== '' && isGoing === true) {
+    updateConfirmation();
+  }
+  if (isNotGoing === true) {
+    regret.textContent = `${getName()} can't make it.`;
+    console.log(regret.textContent);
+  }
 
 });
 
 guestInput.addEventListener('input', () => {
 
   // YOUR CODE HERE
+  if(guestInput.value !== '' && isGoing === true) {
+    updateConfirmation();
+  }
 
 
 });

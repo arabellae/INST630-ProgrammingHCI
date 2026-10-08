@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         // Step 2: Use forEach to go through each restaurant
         restaurants.forEach((resto, index) => {
-            restaurantList.innerHTML += `<div>${resto.name}</div>`
+            restaurantList.innerHTML += `<div>${resto.name}, ${resto.cuisine}, ${resto.rating}, ${resto.priceRange}</div>`
         })
         
         // Step 3: For each restaurant, create HTML and add it to the list
